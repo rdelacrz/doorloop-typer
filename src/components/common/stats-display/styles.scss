@@ -1,22 +1,33 @@
 .stats-display-wrapper {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     padding-bottom: 1.5rem;
     padding-top: 1.5rem;
     .stat-container {
         + .stat-container {
-            margin-top: 1rem;
+            margin-top: 16px;
+        }
+        &.timer {
+            font-size: 1rem;
+            @include responsive-multi-setter((
+                text-align: (left, right),
+            ), 2);
+            .seconds {
+                &.medium {
+                    color: rgb(165, 165, 74);
+                }
+                &.low {
+                    color: red;
+                }
+            }
         }
         .label {
             font-weight: bold;
         }
         .count {
             color: green;
-            &.no-matches {
-                color: black;
-            }
-            &.mistakes {
-                color: red;
-            }
+        }
+        .mistakes {
+            color: red;
         }
     }
 }

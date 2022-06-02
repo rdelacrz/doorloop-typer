@@ -1,5 +1,4 @@
-import { FunctionComponent, useMemo, useState } from 'react';
-import clsx from 'clsx';
+import { FunctionComponent, useState } from 'react';
 import randomWords from 'random-words';
 import Button from '@mui/material/Button';
 import { StatsDisplay, TextTyper, WordDisplay } from '~/components/common';
@@ -19,41 +18,15 @@ const App: FunctionComponent<{}> = () => {
   /* State variables */
   const [actualWords, setActualWords] = useState(generateRandomWords);
   const [typedWords, setTypedWords] = useState<string[]>([]);
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
   /* Hooks */
   const { secondsLeft, active, dirty, startTimer } = useTimer();
 
-  /* Calculated variables */
-  const { numberOfMatches, mistakeCount } = useMemo(() => {
-    let mistakeCount = 0;
-    const numberOfMatches = typedWords.reduce((count, typedWord, index) => {
-      if (index < actualWords.length) {
-        if (actualWords[index] === typedWord) {
-          return count + 1;
-        } else if (index !== currentWordIndex) {
-          mistakeCount++;
-        }
-      }
-      return count;
-    }, 0);
-    return { numberOfMatches, mistakeCount };
-  }, [typedWords, actualWords, currentWordIndex]);
-
   /* Functions */
-  const handleChange = (value: string, updatedTypedWordList: string[]) => {
-    const endsWithSpace = value.endsWith(' ');
-
+  const handleChange = (updatedTypedWordList: string[]) => {
     // Actual words will need to contain new entries if max word count is reached
-    if (updatedTypedWordList.length >= actualWords.length && endsWithSpace) {
+    if (updatedTypedWordList.length > actualWords.length) {
       setActualWords(actualWords.concat(generateRandomWords()));
-    }
-
-    // Determines current word index (if text ends with space, adds 1 more to current word list count)
-    if (endsWithSpace) {
-      setCurrentWordIndex(updatedTypedWordList.length);
-    } else {
-      setCurrentWordIndex(updatedTypedWordList.length === 0 ? 0 : updatedTypedWordList.length - 1);
     }
 
     setTypedWords(updatedTypedWordList);
@@ -66,11 +39,11 @@ const App: FunctionComponent<{}> = () => {
   const handleRestartGame = () => {
     setActualWords(generateRandomWords());
     setTypedWords([]);
-    setCurrentWordIndex(0);
     startTimer();
   }
 
   /* Regular variables */
+  const currentWordIndex = typedWords.length === 0 ? 0 : typedWords.length - 1;
   const displayIndex = currentWordIndex - (currentWordIndex % DISPLAY_COUNT);
   const displayedActualWords = actualWords.slice(displayIndex, displayIndex + DISPLAY_COUNT);
 
@@ -82,8 +55,9 @@ const App: FunctionComponent<{}> = () => {
     <PageLayout className='app-page-wrapper'>
       <StatsDisplay
         secondsLeft={secondsLeft}
-        numberOfMatches={numberOfMatches}
-        mistakeCount={mistakeCount}
+        actualWords={actualWords}
+        typedWords={typedWords}
+        currentWordIndex={currentWordIndex}
       />
       {!active && (
         <p className='instructions'>

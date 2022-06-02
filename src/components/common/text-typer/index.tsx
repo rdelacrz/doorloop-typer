@@ -11,18 +11,17 @@ interface TextTyperProps {
   id?: string;
   className?: string;
   wordList?: string[];
-  onChange: (value: string, updatedWordList: string[]) => void;
+  onChange: (updatedWordList: string[]) => void;
 }
 
 export const TextTyper: FunctionComponent<TextTyperProps> = (props) => {
+  /* State and reference variables */
   const wordList = (props.wordList || []);
-  const latestWord = useRef(wordList.length > 0 ? wordList[wordList.length - 1] : null);
-
-  const [text, setText] = useState(() => wordList.join(' '));
+  const [text, setText] = useState(() => wordList.length > 0 ? wordList[wordList.length - 1] : '');
   const [focused, setFocused] = useState(false);
-
   const inputRef = createRef<HTMLInputElement>();
 
+  /* Functions */
   const handleMouseDown = (event: MouseEvent<HTMLInputElement>) => {
     event.preventDefault();
     if (!focused) {
@@ -54,54 +53,36 @@ export const TextTyper: FunctionComponent<TextTyperProps> = (props) => {
     }
   }
 
-  // Note: Function is implemented this way (as opposed to simply using props.wordList.join(' ') to generate a new list
-  // every time), because this is more performance efficient (appends to or pops from list rather than iterating through
-  // whole list every time handleChange is called)
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
 
     const value = event.target.value.toLowerCase();
-    const letterRemoved = value.length < text.length;
-
     let updatedWords = (props.wordList || []).slice(0);
 
     // Updates list of words based on latest character
     if (value.length > 0) {
-      // Checks if latest char is empty space (if result of backspace, may mean word was deleted)
+      // Checks if latest character is empty space (means moving on to next word)
       if (value[value.length - 1] === ' ') {
-        if (letterRemoved && latestWord.current !== ' ') {
-          updatedWords.pop();
+        // Only processes space if letters already are in text field
+        if (value.trim().length > 0) {
+          updatedWords.push('');
+          setText('');
         }
-        latestWord.current = ' ';
-
-      // If latest char is a letter, checks if stored word is currently not a word
-      } else if (!latestWord.current || latestWord.current === ' ') {
-        if (letterRemoved) {
-          const lastWordCutoff = value.lastIndexOf(' ');
-          latestWord.current = lastWordCutoff < 0 ? value : value.substring(lastWordCutoff + 1);
-        } else {
-          // Means new word has been typed and should be added to list of words
-          latestWord.current = value[value.length - 1];
-          updatedWords.push(latestWord.current);
-        }
-
-      // Means latest word has been updated
+  
+      // If latest char is a letter, updates latest word in word list
       } else {
-        if (letterRemoved) {
-          latestWord.current = latestWord.current.substring(0, latestWord.current.length - 1);
+        if (updatedWords.length === 0) {
+          updatedWords = [value];
         } else {
-          latestWord.current += value[value.length - 1];
+          updatedWords[updatedWords.length - 1] = value;
         }
-        updatedWords[updatedWords.length - 1] = latestWord.current;
+        setText(value);
       }
     } else {
-      latestWord.current = null;
-      updatedWords = [];
+      setText(value);
     }
     
-    // Sets value in text field
-    setText(value);
-    props.onChange(value, updatedWords);
+    props.onChange(updatedWords);
   }
 
   return (
