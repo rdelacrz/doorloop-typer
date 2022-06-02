@@ -97,4 +97,4 @@ const App: FunctionComponent<{}> = () => {
   )
 }
 
-export default App
+export default App;
