@@ -1,0 +1,16 @@
+@import './fonts';
+@import './mixins';
+
+html, body {
+  width: 100%;
+  @include responsive-multi-setter((
+    font-size: (12px, 14px, 16px)
+  ), 3);
+}
+
+body {
+  font-family: 'Roboto';
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}

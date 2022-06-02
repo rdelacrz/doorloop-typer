@@ -1,0 +1,11 @@
+.page-layout-wrapper {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    min-height: 100vh;
+    .page-layout-container {
+        flex: 1;
+        padding-bottom: 1rem;
+        padding-top: 1rem;
+    }
+}
