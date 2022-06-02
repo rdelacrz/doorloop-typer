@@ -13,6 +13,7 @@ export default defineConfig({
     }
   },
   resolve: {
+    preserveSymlinks: true,
     alias: {
       '~': resolve('./src'),
     },
