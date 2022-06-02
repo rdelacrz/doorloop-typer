@@ -5,6 +5,21 @@ import { resolve } from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  build: {
+    commonjsOptions: {
+      include: /node_modules/,
+      transformMixedEsModules: true,
+    },
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+      },
+    },
+  },
+  esbuild: {
+    jsxFactory: 'jsx',
+    jsxInject: `import {jsx, css} from '@emotion/react'`,
+  },
   css: {
     preprocessorOptions: {
       scss: {
@@ -15,7 +30,7 @@ export default defineConfig({
   resolve: {
     preserveSymlinks: true,
     alias: {
-      '~': resolve('./src'),
+      '~': resolve(__dirname, 'src'),
     },
   },
 });
