@@ -5,6 +5,13 @@ import { resolve } from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import '~/styles/mixins';`,
+      },
+    }
+  },
   resolve: {
     alias: {
       '~': resolve(__dirname, 'src'),

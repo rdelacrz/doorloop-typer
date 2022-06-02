@@ -11,14 +11,14 @@ interface PageLayoutProps {
   className?: string;
 }
 
-export const PageLayout: FunctionComponent<PropsWithChildren<PageLayoutProps>> = ({ children, className }) => {
+export const PageLayout: FunctionComponent<PropsWithChildren<PageLayoutProps>> = (props) => {
   const [paddingTop, setPaddingTop] = useState(104);
 
   return (
-    <div className={clsx('page-layout-wrapper', className)} style={{ paddingTop }}>
+    <div className={clsx('page-layout-wrapper', props.className)} style={{ paddingTop }}>
       <Header onHeaderHeightUpdate={setPaddingTop} />
       <Container className='page-layout-container' maxWidth='lg'>
-        {children}
+        {props.children}
       </Container>
       <Footer />
     </div>

@@ -10,7 +10,7 @@ interface HeaderProps {
   onHeaderHeightUpdate: (headerHeight: number) => void;
 }
 
-export const Header: FunctionComponent<HeaderProps> = ({ className, onHeaderHeightUpdate }) => {
+export const Header: FunctionComponent<HeaderProps> = (props) => {
   const headerRef = useRef<HTMLElement>(null);
   const { width } = useWindowSize();
 
@@ -18,12 +18,12 @@ export const Header: FunctionComponent<HeaderProps> = ({ className, onHeaderHeig
   useEffect(() => {
     const headerRect = headerRef?.current?.getBoundingClientRect();
     if (headerRect) {
-      onHeaderHeightUpdate(headerRect.height);
+      props.onHeaderHeightUpdate(headerRect.height);
     }
   }, [width]);
 
   return (
-    <header className={clsx('header-wrapper', className)} ref={headerRef}>
+    <header className={clsx('header-wrapper', props.className)} ref={headerRef}>
       <Container maxWidth='lg'>
         Doorloop Typer
       </Container>

@@ -1,0 +1,11 @@
+.text-typer-wrapper {
+    display: flex;
+    justify-content: center;
+    .text-typer-container {
+        max-width: 500px;
+        pointer-events: none;
+        input {
+            user-select: none;
+        }
+    }
+}

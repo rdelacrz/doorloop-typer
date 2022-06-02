@@ -1,0 +1,28 @@
+.word-display-wrapper {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    .actual-word-container {
+        box-sizing: border-box;
+        min-height: 50px;
+        .actual-word {
+            color: grey;
+            font-weight: 500;
+            transition: all 250ms ease-in;
+            @include responsive-multi-setter((
+                font-size: (16px, 20px, 24px, 28px, 32px),
+            ), 5);
+            &.current {
+                color: black;
+                margin-top: 5px;
+            }
+            &.wrong {
+                color: red;
+            }
+            &.matched {
+                color: green;
+            }
+        }
+    }
+}

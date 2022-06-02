@@ -1,0 +1,22 @@
+.stats-display-wrapper {
+    font-size: 1.5rem;
+    padding-bottom: 1.5rem;
+    padding-top: 1.5rem;
+    .stat-container {
+        + .stat-container {
+            margin-top: 1rem;
+        }
+        .label {
+            font-weight: bold;
+        }
+        .count {
+            color: green;
+            &.no-matches {
+                color: black;
+            }
+            &.mistakes {
+                color: red;
+            }
+        }
+    }
+}
