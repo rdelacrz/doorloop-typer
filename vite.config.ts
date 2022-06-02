@@ -14,7 +14,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '~': resolve(process.cwd(), 'src'),
+      '~': resolve('./src'),
     },
   },
 });
