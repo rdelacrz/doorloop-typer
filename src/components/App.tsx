@@ -5,7 +5,7 @@ import { StatsDisplay, TextTyper, WordDisplay } from '~/components/common';
 import { PageLayout } from '~/components/layouts';
 import { useTimer } from '~/utilities';
 
-import './app.scss';
+import './App.scss';
 
 const DISPLAY_COUNT = 5;
 
